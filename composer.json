@@ -1,0 +1,26 @@
+{
+    "name": "sprinix/skip2fa-by-ip",
+    "description": "Magento 2 module for skipping two-factor authentication (2FA) by IP address",
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "Gulshan Maurya",
+            "email": "gulshan.4dream@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7||^8",
+        "magento/module-store": "^102.0",
+        "magento/module-config": "^101.0",
+        "magento/framework": "^103"
+    },
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Sprinix\\Skip2FAByIP\\": ""
+        }
+    }
+}
