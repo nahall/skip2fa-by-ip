@@ -11,8 +11,6 @@
     ],
     "require": {
         "php": "^7||^8",
-        "magento/module-store": "^102.0",
-        "magento/module-config": "^101.0",
         "magento/framework": "^103"
     },
     "autoload": {
