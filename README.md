@@ -6,7 +6,7 @@ Sprinix_Skip2FAByIP is a Magento 2 module that allows skipping Two-Factor Authen
 ## Installation
 
 1. Copy the contents of this repository to the `app/code/Sprinix/Skip2FAByIP` directory of your Magento 2 installation.
-2. OR run command `bin/composer require sprinix/skip2fa-by-ip` to install using composer
+2. OR run command `composer require sprinix/skip2fa-by-ip` to install using composer
 3. Run the following command from the Magento root directory:
 
 ```
