@@ -6,24 +6,30 @@ use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
 use Magento\Store\Model\ScopeInterface;
 use Magento\TwoFactorAuth\Model\TfaSession;
+use Magento\Framework\App\RequestInterface;
 
 class SkipTwoFactorAuthPlugin
 {
     protected $scopeConfig;
     protected $remoteAddress;
+    protected $request;
 
     /**
      * SkipTwoFactorAuthPlugin constructor.
      * @param ScopeConfigInterface $scopeConfig
      * @param RemoteAddress $remoteAddress
+     * @param RequestInterface $request
      */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
-        RemoteAddress $remoteAddress
+        RemoteAddress $remoteAddress,
+        RequestInterface $request
+
     )
     {
         $this->scopeConfig = $scopeConfig;
         $this->remoteAddress = $remoteAddress;
+        $this->request = $request;
     }
 
     /**
@@ -43,6 +49,15 @@ class SkipTwoFactorAuthPlugin
         $allowedIps = $this->scopeConfig->getValue('twofactorauth/general/allowed_ips',
             ScopeInterface::SCOPE_STORE);
         return explode(',', $allowedIps ?? '');
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getIpFromKey()
+    {
+        return $this->scopeConfig->getValue('twofactorauth/general/get_ip_from_key',
+            ScopeInterface::SCOPE_STORE);
     }
 
     /**
@@ -67,8 +82,28 @@ class SkipTwoFactorAuthPlugin
     public function isIpAllowed(): bool
     {
         $allowedIps = $this->getAllowedIps();
-        $clientIp = $this->remoteAddress->getRemoteAddress();
+        $clientIp = $this->getClientIp();
 
         return in_array($clientIp, $allowedIps);
     }
+
+    /**
+     * @return string
+     */
+    public function getClientIp()
+    {
+        $server = $this->request->getServer();
+        $key = $this->getIpFromKey();
+        if (isset($server['HTTP_CDN_LOOP']) && $server['HTTP_CDN_LOOP'] == 'cloudflare'
+            && isset($server['HTTP_CF_CONNECTING_IP'])) {
+            return $server['HTTP_CF_CONNECTING_IP'];
+        } elseif (isset($key) && isset($server[(string)$key])) {
+            return $server[(string)$key];
+        } elseif (isset($server['HTTP_X_FORWARDED_FOR'])) {
+            return $server['HTTP_X_FORWARDED_FOR'][0];
+        } else {
+            return $this->remoteAddress->getRemoteAddress();
+        }
+    }
 }
+

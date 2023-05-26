@@ -12,6 +12,11 @@
                     <label>Allowed IP Addresses</label>
                     <comment>Enter comma-separated IP addresses that can bypass 2FA. No SPACE allowed</comment>
                 </field>
+                <field id="get_ip_from_key" translate="label" type="text" sortOrder="1021" showInDefault="1"
+                       showInWebsite="1" showInStore="1">
+                    <label>Get IP Addresses From Key</label>
+                    <comment>Enter $_SERVER key from which Ip should be read, Example - HTTP_X_FORWARDED_FOR</comment>
+                </field>
             </group>
         </section>
     </system>
