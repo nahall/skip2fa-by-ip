@@ -34,9 +34,14 @@ Once the module is enabled and configured, any requests originating from the spe
 *Clean Magento cache*
 
 ` bin/magento cache:clean`
+
 ## Compatibility
 
 This module is compatible with Magento 2.4.x versions.
+
+This module supports proxy detection as well, you can also define your client IP HTTP header in the configuration as well.
+
+This module respects headers from cloudflare.
 
 ## Contribution
 
