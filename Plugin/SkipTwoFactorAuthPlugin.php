@@ -99,8 +99,8 @@ class SkipTwoFactorAuthPlugin
             return $server['HTTP_CF_CONNECTING_IP'];
         } elseif (isset($key) && isset($server[(string)$key])) {
             return $server[(string)$key];
-        } elseif (isset($server['HTTP_X_FORWARDED_FOR'])) {
-            return $server['HTTP_X_FORWARDED_FOR'][0];
+        } elseif (isset($server['HTTP_X_FORWARDED_FOR']) && !empty($server['HTTP_X_FORWARDED_FOR'])) {
+            return explode(',', $server['HTTP_X_FORWARDED_FOR'])[0];
         } else {
             return $this->remoteAddress->getRemoteAddress();
         }
